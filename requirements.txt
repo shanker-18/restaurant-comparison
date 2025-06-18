@@ -3,3 +3,6 @@ pandas
 matplotlib
 pymongo
 seaborn
+pymongo
+streamlit-lottie
+requests
