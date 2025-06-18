@@ -4,6 +4,9 @@ from pymongo.server_api import ServerApi
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import streamlit as st
+from streamlit_lottie import st_lottie
+import requests
 
 # MongoDB Connection
 uri = "mongodb+srv://sylvester:Hostwire123$@restaurantsdb.ptj9p.mongodb.net/?retryWrites=true&w=majority&appName=restaurantsdb"
@@ -51,6 +54,24 @@ page = st.sidebar.radio("Go to", ["Home", "Restaurant Filter", "Restaurant Compa
 # Home Page
 if page == "Home":
     st.title("Welcome to Restaurant Finder 🍽️")
+    from streamlit_lottie import st_lottie
+    import requests
+
+
+    def load_lottieurl(url: str):
+        r = requests.get(url)
+        if r.status_code != 200:
+            return None
+        return r.json()
+
+
+    # Example Lottie Animation URL (Replace with your choice)
+    lottie_animation = load_lottieurl("https://assets8.lottiefiles.com/packages/lf20_1a8dx7zj.json")
+
+    # Display Lottie Animation
+    if lottie_animation:
+        st_lottie(lottie_animation, height=300, key="restaurant_animation")
+
     st.write("Use this app to filter and compare restaurants based on cuisine, location, and ratings.")
 
     # Updated Image from Freepik
@@ -61,6 +82,25 @@ if page == "Home":
 # Restaurant Filter Page
 elif page == "Restaurant Filter":
     st.title("Restaurant Filter 🍛")
+    st.markdown(
+        """
+        <style>
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            .animated-text {
+                animation: fadeIn 2s ease-in-out;
+            }
+        </style>
+        <div class="animated-text">
+            <h3>Use this app to filter and compare restaurants based on cuisine, location, and ratings.</h3>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
     st.dataframe(df)
 
     # Filter Based on User Input
@@ -91,9 +131,6 @@ elif page == "Restaurant Filter":
 
 # Restaurant Comparison Page
 elif page == "Restaurant Comparison":
-    st.title("Restaurant Comparison 🍽️")
-    st.subheader("Compare Two Restaurants")
-
     # Get user input for restaurant names
     rest1 = st.text_input("Enter the first restaurant name:").strip()
     rest2 = st.text_input("Enter the second restaurant name:").strip()
@@ -140,6 +177,7 @@ elif page == "Restaurant Comparison":
             ax.set_title("Restaurant Rating Comparison")
             st.pyplot(fig)
 
+
             st.subheader("Summary")
             if rating1 is not None and rating2 is not None:
                 if rating1 > rating2:
@@ -174,6 +212,7 @@ elif page == "Restaurant Comparison":
                 st.write(f"🔗 {swiggy_link1}")
 
                 st.write(f"Rating for {rest2}: {rating2}")
+                st.write(f"**{rest1}:** {rating1 if rating1 is not None else 'Rating not available'} ⭐")
                 st.write(f"🔗 {swiggy_link2}")
         else:
             st.warning("One or both restaurant names not found in the database.")
