@@ -16,7 +16,7 @@ This project is a **fullstack web application** that allows users to **compare r
 
 ## Tech Stack
 
-### 🖥Frontend:
+### Frontend:
 - React.js
 - Tailwind CSS / Bootstrap (optional)
 - Axios (for API calls)
